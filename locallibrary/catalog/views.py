@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from .models import Book, Author, BookInstance, Genre
+from .models import Book, Author, BookInstance
+from django.views import generic
 
 def index(request):
     """View function of home page."""
@@ -17,3 +18,15 @@ def index(request):
     }
 
     return render(request, 'index.html', context=context)
+
+class BookListView(generic.ListView):
+    model = Book
+    context_object_name = 'book_list'  #name for template
+    queryset = Book.objects.all()
+    template_name = 'book_list.html'
+    paginate_by = 2
+
+class BookDetailView(generic.DetailView):
+    model = Book
+    context_object_name = 'book_detail'
+    template_name = 'book_detail.html'
