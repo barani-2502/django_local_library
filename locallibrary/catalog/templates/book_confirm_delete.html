@@ -1,0 +1,19 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Delete Book</h1>
+  <p>Are you sure you want to delete the book: <strong>{{ book.title }}</strong>?</p>
+
+  {% if book.bookinstance_set.exists %}
+    <div class="alert alert-warning">
+      This book cannot be deleted because it still has copies (BookInstances) associated with it.
+    </div>
+    <a href="{{ book.get_absolute_url }}" class="btn btn-secondary">Back</a>
+  {% else %}
+    <form method="post">
+      {% csrf_token %}
+      <input type="submit" value="Confirm delete" class="btn btn-danger">
+      <a href="{{ book.get_absolute_url }}" class="btn btn-secondary">Cancel</a>
+    </form>
+  {% endif %}
+{% endblock %}

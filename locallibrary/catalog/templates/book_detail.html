@@ -3,8 +3,10 @@
 {% block content %}
   <h1>Title: {{ book_detail.title }}</h1>
 
-  <p><strong>Author:</strong> <a href= "{{ book.author.get_absolute_url }}">{{ book_detail.author }}</a></p>
-  <!-- author detail link not yet defined -->
+  <p><strong>Author:</strong> 
+    <a href="{{ book_detail.author.get_absolute_url }}">{{ book_detail.author }}</a>
+  </p>
+
   <p><strong>Summary:</strong> {{ book_detail.summary }}</p>
   <p><strong>ISBN:</strong> {{ book_detail.isbn }}</p>
   <p><strong>Language:</strong> {{ book_detail.language }}</p>
@@ -26,4 +28,20 @@
       <p class="text-muted"><strong>Id:</strong> {{ copy.id }}</p>
     {% endfor %}
   </div>
+{% endblock %}
+
+{% block sidebar %}
+  {{ block.super }}
+
+  {% if perms.catalog.change_book or perms.catalog.delete_book %}
+    <hr>
+    <ul class="sidebar-nav">
+      {% if perms.catalog.change_book %}
+        <li><a href="{% url 'book-update' book_detail.id %}">Update book</a></li>
+      {% endif %}
+      {% if perms.catalog.delete_book and not book_detail.bookinstance_set.exists %}
+        <li><a href="{% url 'book-delete' book_detail.id %}">Delete book</a></li>
+      {% endif %}
+    </ul>
+  {% endif %}
 {% endblock %}
