@@ -10,7 +10,7 @@
           {{ book.book.title }} — Borrowed by {{ book.borrower.get_username }} — Due: {{ book.due_back }}
         </li>
         {% if perms.catalog.can_mark_returned %}- 
-        <a href="{% url 'renew_book_librarian' book.id %}">Renew</a>
+        <a href="{% url 'renew-book-librarian' book.id %}">Renew</a>
         {% endif %}
       {% endfor %}
     </ul>
